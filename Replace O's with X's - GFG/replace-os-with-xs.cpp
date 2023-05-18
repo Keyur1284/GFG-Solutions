@@ -111,7 +111,7 @@ public:
                         int newx = i + dx[dir];
                         int newy = j + dy[dir];
 
-                        if (newx >= 0 && newx < n && newy >= 0 && newy < m && mat[newx][newy] == 'O')
+                        if (mat[newx][newy] == 'O')
                             dsu.UnionRank(i * m + j, newx * m + newy);
                     }
                 }
