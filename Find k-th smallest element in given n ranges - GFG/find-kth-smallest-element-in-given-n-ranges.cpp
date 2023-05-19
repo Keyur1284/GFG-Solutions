@@ -9,38 +9,57 @@ using namespace std;
 
 class Solution{
     public:
+    
+    vector<vector<int>> merge (vector<vector<int>> &range)
+    {
+        int n = range.size();
+        vector<vector<int>> merged;
+        vector<int> temp = range[0];
+        
+        for (int i = 1; i < n; i++)
+        {
+            if (temp[1] >= range[i][0])
+                temp[1] = max(temp[1], range[i][1]);
+                
+            else
+            {
+                merged.emplace_back(temp);
+                temp = range[i];
+            }
+        }
+        
+        merged.emplace_back(temp);
+        
+        return merged;
+    }
+    
+    int find (vector<vector<int>> &merged, int k)
+    {
+        int n = merged.size();
+        
+        for (int i = 0; i < n; i++)
+        {
+            if (k <= merged[i][1] - merged[i][0] + 1)
+                return (merged[i][0] + k - 1);
+                
+            k -= (merged[i][1] - merged[i][0] + 1);
+        }
+        
+        if (k)
+            return -1;
+    }
+    
     vector<int>kthSmallestNum(int n, vector<vector<int>>&range, int q, vector<int>queries){
         
-        sort (range.begin(), range.end());
-    
-        vector<int> ans(q);
+        sort(range.begin(), range.end());
         
-        for(int p = 0; p < q; p++)
+        vector<vector<int>> merged = merge(range);
+        vector<int> ans;
+        
+        for (auto &it : queries)
         {
-            int current = range[0][0];
-            int pos = 1;
-
-            for(int i = 0; i < n; i++)
-            {
-                int need = queries[p] - pos;
-
-                if(need and range[i][0] > current)
-                {
-                    --need;
-                    ++pos;
-                    current = range[i][0];
-                }
-
-                int cango = range[i][1] - current;
-                int change = min(cango, need);
-                change = max(0, change);
-
-                pos += change;
-                current += change;
-            }
-
-
-            ans[p] = (pos == queries[p]) ? current : -1;
+            int num = find(merged, it);
+            ans.emplace_back(num);
         }
         
         return ans;
