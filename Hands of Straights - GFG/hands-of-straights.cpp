@@ -8,21 +8,24 @@ class Solution {
   public:
     bool isStraightHand(int N, int groupSize, vector<int> &hand) {
         
-        multiset<int> ms;
+        map<int, int> mp;
         
         for (auto &it : hand)
-            ms.emplace(it);
+            mp[it]++;
             
-        while ((int)ms.size())
+        for (auto &it : mp)
         {
-            auto it = *ms.begin();
-            
-            for (int k = 0; k < groupSize; k++)
+            if (mp[it.first] > 0)
             {
-                if (ms.count(it + k) == 0)
-                    return false;
+                int freq = mp[it.first];
+                
+                for (int k = 0; k < groupSize; k++)
+                {
+                    mp[it.first + k] -= freq;
                     
-                ms.erase(ms.find(it + k));
+                    if (mp[it.first + k] < 0)
+                        return false;
+                }
             }
         }
         
