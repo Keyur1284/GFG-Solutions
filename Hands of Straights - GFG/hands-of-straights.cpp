@@ -17,11 +17,9 @@ class Solution {
         {
             if (mp[it.first] > 0)
             {
-                int freq = mp[it.first];
-                
-                for (int k = 0; k < groupSize; k++)
+                for (int k = groupSize - 1; k >= 0; k--)
                 {
-                    mp[it.first + k] -= freq;
+                    mp[it.first + k] -= mp[it.first];
                     
                     if (mp[it.first + k] < 0)
                         return false;
