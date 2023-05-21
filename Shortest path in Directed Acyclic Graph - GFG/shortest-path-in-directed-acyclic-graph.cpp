@@ -32,13 +32,7 @@ class Solution {
         vector<bool> vis(N, false);
         stack<int> st;
         
-        for (int i = 0; i < N; i++)
-        {
-            if (!vis[i])
-            {
-                TopoSortDFS (i, vis, st, adj);
-            }
-        }
+        TopoSortDFS (0, vis, st, adj);
         
         vector<int> dist(N, 1e9);
         dist[0] = 0;
