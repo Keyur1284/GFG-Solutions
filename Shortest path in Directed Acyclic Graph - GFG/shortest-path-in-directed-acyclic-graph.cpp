@@ -34,7 +34,7 @@ class Solution {
         
         TopoSortDFS (0, vis, st, adj);
         
-        vector<int> dist(N, 1e9);
+        vector<int> dist(N, INT_MAX);
         dist[0] = 0;
         
         while (!st.empty())
@@ -42,16 +42,19 @@ class Solution {
             int node = st.top();
             st.pop();
             
-            for (auto &it : adj[node])
+            if (dist[node] != INT_MAX)
             {
-                if (dist[node] + it.second < dist[it.first])
-                    dist[it.first] = dist[node] + it.second;
+                for (auto &it : adj[node])
+                {
+                    if (dist[node] + it.second < dist[it.first])
+                        dist[it.first] = dist[node] + it.second;
+                }
             }
         }
         
         for (auto &it : dist)
         {
-            if (it == 1e9)
+            if (it == INT_MAX)
                 it = -1;
         }
         
