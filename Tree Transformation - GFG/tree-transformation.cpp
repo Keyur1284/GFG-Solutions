@@ -12,15 +12,23 @@ class Solution {
     public:
     int solve(int N, vector<int> p){
         
-        unordered_set<int> st;
+        vector<int> indegree(N, 0);
         
-        for (auto &it : p)
+        for (int i = 1; i < N; i++)
         {
-            if (it != -1 && it != 0)
-                st.emplace(it);
+            indegree[i]++;
+            indegree[p[i]]++;
         }
         
-        return st.size();
+        int edges = N - 1;
+        
+        for (auto &it : indegree)
+        {
+            if (it == 1)
+                edges--;
+        }
+        
+        return edges;
     }
 };
 
