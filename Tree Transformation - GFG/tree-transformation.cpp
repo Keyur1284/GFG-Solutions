@@ -20,15 +20,17 @@ class Solution {
             indegree[p[i]]++;
         }
         
-        int edges = N - 1;
+        int leafNodes = 0;
         
         for (auto &it : indegree)
         {
             if (it == 1)
-                edges--;
+                leafNodes++;
         }
         
-        return edges;
+        int nonLeafNodes = N - leafNodes;
+        
+        return (nonLeafNodes - 1);
     }
 };
 
