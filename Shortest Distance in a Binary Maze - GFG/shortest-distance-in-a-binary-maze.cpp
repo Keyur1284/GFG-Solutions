@@ -20,20 +20,21 @@ class Solution {
         int m = grid[0].size();
         
         vector<vector<int>> dist (n, vector<int> (m, INT_MAX));
-        queue<pair<int, int>> BFS;
-        
-        BFS.emplace(source);
+        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> BFS;
+
+        BFS.push({0, source});
         dist[source.first][source.second] = 0;
         
         while (!BFS.empty())
         {
-            auto it = BFS.front();
-            int x = it.first;
-            int y = it.second;
+            auto it = BFS.top();
+            int steps = it.first;
+            int x = it.second.first;
+            int y = it.second.second;
             BFS.pop();
             
-            if (it == destination)
-                return dist[x][y];
+            if (it.second == destination)
+                return steps;
                 
             for (int i = 0; i < 4; i++)
             {
@@ -42,10 +43,10 @@ class Solution {
                 
                 if (newx >= 0 && newx < n && newy >= 0 && newy < m && grid[newx][newy])
                 {
-                    if (dist[x][y] + 1 < dist[newx][newy])
+                    if (steps + 1 < dist[newx][newy])
                     {
-                        dist[newx][newy] = dist[x][y] + 1;
-                        BFS.emplace(newx, newy);
+                        dist[newx][newy] = steps + 1;
+                        BFS.push({dist[newx][newy], {newx, newy}});
                     }
                 }
             }
