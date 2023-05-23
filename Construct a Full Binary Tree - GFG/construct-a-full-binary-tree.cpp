@@ -34,16 +34,12 @@ class Solution{
   
     Node* makeTree (Node* vertex, int &index, int &pos, int pre[], int preMirror[])
     {
-        if (index == 0)
-            vertex = new Node(pre[index]);
+        vertex = new Node(pre[index++]);
             
         if (vertex->data != preMirror[pos])
         {
-            vertex->left = new Node(pre[++index]);
-            makeTree(vertex->left, index, pos, pre, preMirror);
-            
-            vertex->right = new Node(pre[++index]);
-            makeTree(vertex->right, index, pos, pre, preMirror);
+            vertex->left = makeTree(vertex->left, index, pos, pre, preMirror);
+            vertex->right = makeTree(vertex->right, index, pos, pre, preMirror);
         }
         
         pos--;
