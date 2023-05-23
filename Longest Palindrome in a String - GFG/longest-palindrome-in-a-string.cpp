@@ -6,7 +6,6 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-  
     string longestPalin (string s) {
         
         int n = s.size();
@@ -18,10 +17,17 @@ class Solution {
         }
 
         vector<int> pal(2 * n + 1, 0);
-        int longestCenter = 0, longestLength = 0;
+        int longestLength = 0, longestCenter = 0, center = 0, right = 0;
         
         for (int i = 0; i < 2 * n + 1; i++)
         {
+            int mirror = 2 * center - i;
+            
+            if (right - i > 0)
+            {
+                pal[i] = min(right - i, pal[mirror]);
+            }
+            
             int l = i - pal[i] - 1;
             int r = i + pal[i] + 1;
             
@@ -37,13 +43,19 @@ class Solution {
                 longestLength = pal[i];
                 longestCenter = i;
             }
+            
+            if (i + pal[i] > right)
+            {
+                right = i + pal[i];
+                center = i;
+            }
         }
         
         string ans = "";
-
+        
         for (int index = longestCenter - longestLength + 1; index < longestCenter + longestLength; index += 2)
             ans += st[index];
-
+            
         return ans;
     }
 };
