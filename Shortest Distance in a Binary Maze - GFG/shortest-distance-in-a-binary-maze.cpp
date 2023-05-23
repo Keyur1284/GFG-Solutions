@@ -22,16 +22,17 @@ class Solution {
         vector<vector<int>> dist (n, vector<int> (m, INT_MAX));
         queue<pair<int, int>> BFS;
         
-        BFS.emplace(source.first, source.second);
+        BFS.emplace(source);
         dist[source.first][source.second] = 0;
         
         while (!BFS.empty())
         {
-            int x = BFS.front().first;
-            int y = BFS.front().second;
+            auto it = BFS.front();
+            int x = it.first;
+            int y = it.second;
             BFS.pop();
             
-            if (x == destination.first && y == destination.second)
+            if (it == destination)
                 return dist[x][y];
                 
             for (int i = 0; i < 4; i++)
