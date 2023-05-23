@@ -32,14 +32,14 @@ struct Node
 class Solution{
   public:
   
-    Node* makeTree (Node* vertex, int &index, int &pos, int pre[], int preMirror[])
+    Node* makeTree (int &index, int &pos, int pre[], int preMirror[])
     {
-        vertex = new Node(pre[index++]);
+        Node* vertex = new Node(pre[index++]);
             
         if (vertex->data != preMirror[pos])
         {
-            vertex->left = makeTree(vertex->left, index, pos, pre, preMirror);
-            vertex->right = makeTree(vertex->right, index, pos, pre, preMirror);
+            vertex->left = makeTree(index, pos, pre, preMirror);
+            vertex->right = makeTree(index, pos, pre, preMirror);
         }
         
         pos--;
@@ -51,7 +51,7 @@ class Solution{
     {
         int index = 0, pos = size - 1;
         
-        Node *head = makeTree(nullptr, index, pos, pre, preMirror);
+        Node *head = makeTree(index, pos, pre, preMirror);
         
         return head;
     }
