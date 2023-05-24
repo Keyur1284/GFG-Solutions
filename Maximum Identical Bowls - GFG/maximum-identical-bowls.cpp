@@ -33,32 +33,14 @@ class Solution {
     int getMaximum(int N, vector<int> &arr) {
         
         long long sum = accumulate(arr.begin(), arr.end(), 0LL);
-        vector<long long> factors;
         
-        for (long long i = 1; i * i <= sum; i++)
+        for (int i = N; i >= 1; i--)
         {
             if (sum % i == 0)
-            {
-                factors.emplace_back(i);
-                
-                if (i * i != sum)
-                    factors.emplace_back(sum / i);
-            }
+                return i;
         }
         
-        long long ans = 0;
-        
-        for (auto &it : factors)
-        {
-            long long temp = sum / it;
-            
-            if (temp > N)
-                continue;
-                
-            ans = max(ans, temp);
-        }
-        
-        return ans;
+        return 0;
     }
 };
 
