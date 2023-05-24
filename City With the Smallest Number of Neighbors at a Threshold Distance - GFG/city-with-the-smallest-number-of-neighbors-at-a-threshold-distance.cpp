@@ -10,49 +10,56 @@ class Solution {
   public:
     int findCity(int n, int m, vector<vector<int>>& edges, int distanceThreshold) {
                      
-        int inf = INT_MAX;
-        vector<vector<int>> dist (n, vector<int> (n, inf));
+        vector<pair<int, int>> adj[n];
 
         for (auto &it : edges)
         {
-            dist[it[0]][it[1]] = it[2];
-            dist[it[1]][it[0]] = it[2];
+            adj[it[0]].emplace_back(it[1], it[2]);
+            adj[it[1]].emplace_back(it[0], it[2]);
         }
 
-        for (int i = 0; i < n; i++)
-            dist[i][i] = 0;
+        int city = -1, minCount = n, inf = INT_MAX;
 
-        for (int via = 0; via < n; via++)
+        for (int src = 0; src < n; src++)
 	    {
-	        for (int i = 0; i < n; i++)
-    	    {
-    	        for (int j = 0; j < n; j++)
-    	        {
-                    if (dist[i][via] < inf && dist[via][j] < inf && dist[i][via] + dist[via][j] < inf)
-    	                dist[i][j] = min(dist[i][j], dist[i][via] + dist[via][j]);
-    	        }
-    	    }
-	    }
+	        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+            vector<int> dist(n, inf);
 
-        int city = -1, minCount = n;
+            pq.emplace(0, src);
+            dist[src] = 0;
 
-        for (int i = 0; i < n; i++)
-        {
+            while (!pq.empty())
+            {
+                auto vertex = pq.top();
+                int steps = vertex.first;
+                int node = vertex.second;
+                pq.pop();
+
+                for (auto &it : adj[node])
+                {
+                    if (steps + it.second < dist[it.first])
+                    {
+                        dist[it.first] = steps + it.second;
+                        pq.emplace(dist[it.first], it.first);
+                    }
+                }
+            }
+
             int count = 0;
 
-            for (int j = 0; j < n; j++)
+            for (int i = 0; i < n; i++)
             {
-                count += (dist[i][j] <=  distanceThreshold);
+                count += (dist[i] <=  distanceThreshold);
             }
 
             if (count <= minCount)
             {
                 minCount = count;
-                city = i;
+                city = src;
             }
         }
 
-        return city;             
+        return city;
     }
 };
 
