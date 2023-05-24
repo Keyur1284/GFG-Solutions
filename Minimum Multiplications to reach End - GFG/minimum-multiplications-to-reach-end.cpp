@@ -14,30 +14,28 @@ class Solution {
         
         int MOD = 100000;
         vector<int> dist(100000, INT_MAX);
-        queue<pair<int, int>> BFS;
+        queue<int> BFS;
         
-        BFS.emplace(start, 0);
+        BFS.emplace(start);
         dist[start] = 0;
         
         while (!BFS.empty())
         {
-            auto node = BFS.front();
-            int num = node.first;
-            int steps = node.second;
+            int num = BFS.front();
             BFS.pop();
             
             for (auto &it : arr)
             {
                 int temp = (it * num) % MOD;
                 
-                if (steps + 1 < dist[temp])
+                if (dist[temp] == INT_MAX)
                 {
-                    dist[temp] = steps + 1;
+                    dist[temp] = dist[num] + 1;
                     
                     if (temp == end)
                         return dist[temp];
-                        
-                    BFS.emplace(temp, dist[temp]);
+                    
+                    BFS.emplace(temp);
                 }
             }
         }
