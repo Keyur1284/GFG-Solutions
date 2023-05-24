@@ -21,7 +21,7 @@ class Solution {
         {
             for (auto &it : edges)
             {
-                if (dist[it[0]] != INT_MAX && dist[it[0]] + it[2] < dist[it[1]])
+                if (dist[it[0]] != 1e8 && dist[it[0]] + it[2] < dist[it[1]])
                 {
                     dist[it[1]] = dist[it[0]] + it[2];
                 }
@@ -30,7 +30,7 @@ class Solution {
         
         for (auto &it : edges)
         {
-            if (dist[it[0]] != INT_MAX && dist[it[0]] + it[2] < dist[it[1]])
+            if (dist[it[0]] != 1e8 && dist[it[0]] + it[2] < dist[it[1]])
             {
                 return {-1};
             }
