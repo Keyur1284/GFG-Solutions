@@ -3,37 +3,107 @@
 using namespace std;
 
 // } Driver Code Ends
+
+class DSU {
+
+private:
+    
+    vector<int> parent, rank, size;
+
+public:
+
+    DSU (int n)
+    {
+        for (int i = 0; i <= n; i++)
+        {
+            parent.emplace_back(i);
+            rank.emplace_back(0);
+            size.emplace_back(1);
+        }
+    }
+
+    int findPar (int node)
+    {
+        if (node == parent[node])
+            return node;
+
+        return parent[node] = findPar(parent[node]);
+    }
+
+    void UnionRank (int u, int v)
+    {
+        u = findPar(u);
+        v = findPar(v);
+
+        if (u == v)
+            return;
+
+        if (rank[u] < rank[v])
+        {
+            parent[u] = v;
+        }
+
+        else if (rank[u] > rank[v])
+        {
+            parent[v] = u;
+        }
+
+        else if (rank[u] == rank[v])
+        {
+            parent[v] = u;
+            rank[u]++;
+        }
+    }
+
+    void UnionSize (int u, int v)
+    {
+        u = findPar(u);
+        v = findPar(v);
+
+        if (u == v)
+            return;
+
+        if (size[u] < size[v])
+        {
+            parent[u] = v;
+            size[v] += size[u];
+        }
+
+        else if (rank[u] >= rank[v])
+        {
+            parent[v] = u;
+            size[u] += size[v];
+        }
+    }    
+};
+
 class Solution
 {
 	public:
 	//Function to find sum of weights of edges of the Minimum Spanning Tree.
     int spanningTree(int V, vector<vector<int>> adj[])
     {
-        int sum = 0;
-        vector<bool> vis(V, false);
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        DSU dsu(V - 1);
         
-        pq.emplace(0, 0);
+        vector<vector<int>> edges;
         
-        while (!pq.empty())
+        for (int node = 0; node < V; node++)
         {
-            auto vertex = pq.top();
-            int node = vertex.second;
-            int wt = vertex.first;
-            pq.pop();
-            
-            if (!vis[node])
+            for (auto &it : adj[node])
             {
-                vis[node] = true;
-                sum += wt;
-                
-                for (auto &it : adj[node])
-                {
-                    if (!vis[it[0]])
-                    {
-                        pq.emplace(it[1], it[0]);
-                    }
-                }
+                edges.push_back({it[1], node, it[0]});
+            }
+        }
+        
+        sort (edges.begin(), edges.end());
+        int sum = 0;
+        
+        for (auto &it : edges)
+        {
+            if (dsu.findPar(it[1]) != dsu.findPar(it[2]))
+            {
+                sum += it[0];
+                dsu.UnionSize(it[1], it[2]);
             }
         }
         
