@@ -46,31 +46,52 @@ struct Node
 class Solution{
     public:
     
-    Node *front = NULL;
-    int size = 0, index = 0;
+    Node *temp = NULL;
     
-    void solve (Node* node)
+    void reverse (Node *curr, Node *prev)
     {
-        if (node->next)
+        while (curr)
         {
-            size++;
-            solve(node->next);
+            temp = curr;
+            Node* nextnode = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nextnode;
         }
-        
-        if (index == (size + 1)/2)
-            return;
-            
-        int data = front->data;
-        front->data = node->data - front->data;
-        node->data = data;
-        front = front->next;
-        index++;
     }
     
     struct Node* modifyTheList(struct Node *head)
     {
-        front = head;
-        solve(head);
+        Node *slow = head, *fast = head;
+        
+        while (fast && fast->next)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        
+        if (fast)
+            slow = slow->next;
+            
+        if (slow == NULL)
+            return head;
+            
+        reverse(slow, NULL);
+        
+        Node *front = head;
+        Node *back = temp;
+        
+        while (back)
+        {
+            int data = front->data;
+            front->data = back->data - front->data;
+            back->data = data;
+            front = front->next;
+            back = back->next;
+        }
+        
+        reverse(temp, NULL);
+        
         return head;
     }
 };
