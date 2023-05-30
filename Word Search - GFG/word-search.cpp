@@ -13,26 +13,26 @@ public:
         return (x >= 0 && x < row && y >= 0 && y < col);
     }
     
-    bool DFS (int x, int y, int &n, int &m, int index, vector<vector<char>>& board, vector<vector<bool>> &vis, string &word)
+    bool DFS (int x, int y, int &n, int &m, int index, vector<vector<char>>& board, string &word)
     {
         if (index == word.size())
             return true;
             
-        vis[x][y] = true;
+        board[x][y] = '$';
         
         for (int i = 0; i < 4; i++)
         {
             int newx = x + dx[i];
             int newy = y + dy[i];
             
-            if (isValid(newx, newy, n, m) && board[newx][newy] == word[index] && !vis[newx][newy])
+            if (isValid(newx, newy, n, m) && board[newx][newy] == word[index])
             {
-                if (DFS (newx, newy, n, m, index + 1, board, vis, word))
+                if (DFS (newx, newy, n, m, index + 1, board, word))
                     return true;
             }
         }
         
-        vis[x][y] = false;
+        board[x][y] = word[index - 1];
         
         return false;
     }
@@ -40,8 +40,7 @@ public:
     bool isWordExist(vector<vector<char>>& board, string &word) {
         
         int n = board.size(), m = board[0].size();
-        vector<vector<bool>> vis (n, vector<bool> (m, false));
-        
+
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < m; j++)
@@ -50,7 +49,7 @@ public:
                 {
                     int index = 1;
                     
-                    if (DFS (i, j, n, m, index, board, vis, word))
+                    if (DFS (i, j, n, m, index, board, word))
                         return true;  
                 }
                 
