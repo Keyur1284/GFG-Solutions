@@ -104,31 +104,38 @@ class Solution{
     /*You are required to complete this method */
     // Return the size of the largest sub-tree which is also a BST
     
-    int size (Node* node)
-    {
-        if (node == NULL)
-            return 0;
-            
-        return 1 + size (node->left) + size(node->right);
-    }
+    class TreeNode{
+      public:
+      
+      int minNode, maxNode, size;
+      
+      TreeNode (int a, int b, int c)
+      {
+          minNode = a;
+          maxNode = b;
+          size = c;
+      }
+        
+    };
     
-    bool checkBST (Node* node, int mini, int maxi)
+    TreeNode findLargestBST (Node* node)
     {
         if (node == NULL)
-            return true;
+            return TreeNode (INT_MAX, INT_MIN, 0);
             
-        if (node->data <= mini || node->data >= maxi)
-            return false;
+        TreeNode left = findLargestBST (node->left);
+        TreeNode right = findLargestBST (node->right);
+        
+        if (left.maxNode < node->data && node->data < right.minNode)
+            return TreeNode (min(left.minNode, node->data), max(right.maxNode, node->data), left.size + right.size + 1);
             
-        return checkBST (node->left, mini, node->data) && checkBST (node->right, node->data, maxi);
+        else
+            return TreeNode (INT_MIN, INT_MAX, max(left.size, right.size));
     }
     
     int largestBst(Node *root)
     {
-    	if (checkBST (root, INT_MIN, INT_MAX))
-    	    return size(root);
-    	    
-    	return max (largestBst(root->left), largestBst(root->right));
+    	return findLargestBST(root).size;
     }
 };
 
