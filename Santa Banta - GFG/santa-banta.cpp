@@ -128,7 +128,8 @@ public:
         
         for (int i = 1; i <= n; i++)
         {
-            k = max(k, dsu.getSize(i));
+            if (dsu.findPar(i) == i)
+                k = max(k, dsu.getSize(i));
         }
         
         return (k > 1) ? primes[k] : -1;
