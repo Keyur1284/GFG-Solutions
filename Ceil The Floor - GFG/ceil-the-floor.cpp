@@ -27,41 +27,19 @@ int main() {
 
 pair<int, int> getFloorAndCeil(int arr[], int n, int x) {
     
-    sort (arr, arr + n);
+    pair<int, int> ans = {-1, INT_MAX};
     
-    pair<int, int> ans = {-1, -1};
-    
-    int low = 0, high = n - 1, mid;
-    
-    while (low <= high)
+    for (int i = 0; i < n; i++)
     {
-        mid = (low + high) >> 1;
-        
-        if (arr[mid] <= x)
-        {
-            ans.first = arr[mid];
-            low = mid + 1;
-        }
-        
-        else
-            high = mid - 1;
+        if (arr[i] <= x)
+            ans.first = max (ans.first, arr[i]);
+            
+        if (arr[i] >= x)
+            ans.second = min (ans.second, arr[i]);
     }
     
-    low = 0, high = n - 1;
-    
-    while (low <= high)
-    {
-        mid = (low + high) >> 1;
-        
-        if (arr[mid] >= x)
-        {
-            ans.second = arr[mid];
-            high = mid - 1;
-        }
-        
-        else
-            low = mid + 1;
-    }
+    if (ans.second == INT_MAX)
+        ans.second = -1;
     
     return ans;
 }
