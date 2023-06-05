@@ -40,19 +40,23 @@ class Solution
 	
 	int mini = INT_MAX;
 	
-	void inorder (Node *node, int &K)
+	void DFS (Node *node, int &K)
 	{
 	    if (node == NULL)
 	        return;
 	        
-	    inorder (node->left, K);
 	    mini = min(mini, abs(node->data - K));
-	    inorder (node->right, K);
+	    
+	    if (node->data > K)
+	        DFS (node->left, K);
+	        
+	    else if (node->data < K)
+	        DFS (node->right, K);
 	}
 	
     int minDiff(Node *root, int K)
     {
-        inorder (root, K);
+        DFS (root, K);
         return mini;
     }
 };
