@@ -40,16 +40,29 @@ class Solution
 	
     int minDiff(Node *root, int K)
     {
-        if (root == NULL)
-            return K;
-            
-        int diff = abs(root->data - K);
+        int mini = K;
+        queue<Node*> BFS;
+        BFS.emplace(root);
         
-        if (root->data > K)
-            return min(diff, minDiff (root->left, K));
+        while (!BFS.empty())
+        {
+            Node* node = BFS.front();
+            BFS.pop();
             
-        else 
-            return min(diff, minDiff (root->right, K));
+            if (node == NULL)
+                continue;
+                
+            mini = min(mini, abs(node->data - K));
+            
+            if (node->data > K)
+                BFS.emplace(node->left);
+                
+            else
+                BFS.emplace(node->right);
+        }
+        
+        
+        return mini;
     }
 };
 
