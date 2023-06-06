@@ -40,44 +40,47 @@ class Solution
 {
     public:
     
-    void findPredecessor (Node *root, Node*& pre, int &key)
-    {
-        Node* node = root;
-        
-        while (node)
-        {
-            if (node->key < key)
-            {
-                pre = node;
-                node = node->right;
-            }
-            
-            else
-                node = node->left;
-        }
-    }
-    
-    void findSuccessor (Node *root, Node*& suc, int &key)
-    {
-        Node* node = root;
-        
-        while (node)
-        {
-            if (node->key > key)
-            {
-                suc = node;
-                node = node->left;
-            }
-            
-            else
-                node = node->right;
-        }
-    }
-    
     void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
     {
-        findPredecessor (root, pre, key);
-        findSuccessor (root, suc, key);
+        if (root == NULL)
+            return;
+            
+        if (root->key == key)
+        {
+            if (root->left)
+            {
+                Node* curr = root->left;
+                
+                while (curr->right)
+                    curr = curr->right;
+                    
+                pre = curr;
+            }
+            
+            if (root->right)
+            {
+                Node* curr = root->right;
+                
+                while (curr->left)
+                    curr = curr->left;
+                    
+                suc = curr;
+            }
+            
+            return;
+        }
+        
+        if (root->key < key)
+        {
+            pre = root;
+            findPreSuc (root->right, pre, suc, key);
+        }
+        
+        else
+        {
+            suc = root;
+            findPreSuc (root->left, pre, suc, key);
+        }
     }
 };
 
