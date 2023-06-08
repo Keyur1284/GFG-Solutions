@@ -27,7 +27,7 @@ public:
         for (int i = 1; i <= n; i++)
         {
             int rem = n - i;
-            int up = k / fact[rem];
+            int next = k / fact[rem];
             
             int val = 1;
             
@@ -35,17 +35,17 @@ public:
             {
                 if (!vis[val])
                 {
-                    if (up == 0)
+                    if (next == 0)
                         break;
                         
-                    up--;
+                    next--;
                 }
                 
                 val++;
             }
             
             ans += val + '0';
-            k = k % fact[rem];
+            k %= fact[rem];
             vis[val] = true;
         }
             
