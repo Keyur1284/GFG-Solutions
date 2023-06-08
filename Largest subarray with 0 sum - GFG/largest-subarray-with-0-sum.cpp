@@ -10,24 +10,25 @@ using namespace std;
 
 class Solution{
     public:
-    int maxLen(vector<int>&arr, int n)
+    int maxLen(vector<int>&nums, int n)
     {   
         unordered_map<int, int> mp;
-        int sum = 0;
-        int maxi = 0;
-        mp[0] = -1;
-        
-        for (int i = 0; i < n; i++)
+        int sum = 0, maxi = 0, k = 0;
+    
+        for (int i = 0; i < nums.size(); i++)
         {
-            sum += arr[i];
-            
-            if (mp.find(sum) == mp.end())
+            sum += nums[i];
+    
+            if (sum == k)
+                maxi = max(maxi, i + 1);
+    
+            if (mp.find(sum - k) != mp.end())
+                maxi = max(maxi, i - mp[sum - k]);
+    
+            if(mp.find(sum) == mp.end())
                 mp[sum] = i;
-                
-            else
-                maxi = max (maxi, i - mp[sum]);
         }
-        
+            
         return maxi;
     }
 };
