@@ -13,19 +13,41 @@ class Solution
 public:
     string kthPermutation(int n, int k)
     {
-        vector<int> vec (n + 1);
-        iota (vec.begin(), vec.end(), 0);
+        vector<int> fact (n);
+        fact[0] = 1;
+        
+        for (int i = 1; i < n; i++)
+            fact[i] = fact[i - 1] * i;
+        
+
+        vector<bool> vis (n + 1, false);
         k--;
-        
-        while (k--)
-        {
-            next_permutation(vec.begin() + 1, vec.end());
-        }
-        
         string ans = "";
         
         for (int i = 1; i <= n; i++)
-            ans += vec[i] + '0';
+        {
+            int rem = n - i;
+            int up = k / fact[rem];
+            
+            int val = 1;
+            
+            while (1)
+            {
+                if (!vis[val])
+                {
+                    if (up == 0)
+                        break;
+                        
+                    up--;
+                }
+                
+                val++;
+            }
+            
+            ans += val + '0';
+            k = k % fact[rem];
+            vis[val] = true;
+        }
             
         return ans;
     }
