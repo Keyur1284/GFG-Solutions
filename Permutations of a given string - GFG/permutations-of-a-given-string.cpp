@@ -7,7 +7,7 @@ class Solution
 {
 	public:
 	
-	    void recc (int left, int &right, set<string> &permutations, string &s)
+	    void recc (int left, int &right, unordered_set<string> &permutations, string &s)
 	    {
 	        if (left == right)
 	        {
@@ -25,12 +25,13 @@ class Solution
 	    
 		vector<string>find_permutation(string s)
 		{
-		    set<string> permutations;
+		    unordered_set<string> permutations;
 		    int right = s.length() - 1;
 		    
 		    recc (0, right, permutations, s);
 
-            vector<string> ans(permutations.begin(), permutations.end());		    
+            vector<string> ans(permutations.begin(), permutations.end());
+            sort(ans.begin(), ans.end());
 
 		    return ans;
 		}
