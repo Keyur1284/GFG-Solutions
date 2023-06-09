@@ -6,18 +6,33 @@ using namespace std;
 class Solution
 {
 	public:
+	
+	    void recc (int left, int &right, set<string> &permutations, string &s)
+	    {
+	        if (left == right)
+	        {
+	            permutations.emplace(s);
+	            return;
+	        }
+	            
+	        for (int index = left; index <= right; index++)
+	        {
+	            swap (s[left], s[index]);
+	            recc (left + 1, right, permutations, s);
+	            swap (s[left], s[index]);
+	        }
+	    }
+	    
 		vector<string>find_permutation(string s)
 		{
-		    sort(s.begin(), s.end());
-		    vector<string> permutations;
+		    set<string> permutations;
+		    int right = s.length() - 1;
 		    
-		    do
-		    {
-		        permutations.emplace_back(s);
-		        
-		    } while (next_permutation(s.begin(), s.end()));
-		    
-		    return permutations;
+		    recc (0, right, permutations, s);
+
+            vector<string> ans(permutations.begin(), permutations.end());		    
+
+		    return ans;
 		}
 };
 
