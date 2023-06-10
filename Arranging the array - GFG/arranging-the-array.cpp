@@ -7,24 +7,37 @@ using namespace std;
 class Solution
 {
     public:
+    
+        void merge (int start, int mid, int end, int arr[])
+        {
+            int left = start, right = mid + 1;
+                
+            while (left <= mid && arr[left] < 0)
+                left++;
+                
+            while (right <= end && arr[right] < 0)
+                right++;
+                
+            reverse (arr + left, arr + mid + 1);
+            reverse (arr + mid + 1, arr + right);
+            reverse (arr + left, arr + right);
+        }
+        
+        void mergeSort (int left, int right, int arr[])
+        {
+            if (left < right)
+            {
+                int mid = (left + right) >> 1;
+                
+                mergeSort (left, mid, arr);
+                mergeSort (mid + 1, right, arr);
+                merge (left, mid, right, arr);
+            }
+        }
+    
         void Rearrange(int arr[], int n)
         {
-            vector<int> neg, pos;
-            
-            for (int i = 0; i < n; i++)
-            {
-                if (arr[i] < 0)
-                    neg.emplace_back(arr[i]);
-                    
-                else
-                    pos.emplace_back(arr[i]);
-            }
-            
-            for (int i = 0; i < neg.size(); i++)
-                arr[i] = neg[i];
-                
-            for (int i = 0; i < pos.size(); i++)
-                arr[i + neg.size()] = pos[i];
+            mergeSort (0, n - 1, arr);
         }
 };
 
