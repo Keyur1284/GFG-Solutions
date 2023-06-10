@@ -111,37 +111,40 @@ struct Node{
 
 /*  Function which returns the  root of 
     the flattened linked list. */
-
-struct comp 
+    
+Node* merge (Node* node1, Node* node2)
 {
-    bool operator () (Node *a, Node* b)
+    if (node1 == NULL)
+        return node2;
+        
+    if (node2 == NULL)
+        return node1;
+        
+    Node* root = NULL;
+        
+    if (node1->data < node2->data)
     {
-        return a->data > b->data;
+        root = node1;
+        root->bottom = merge (node1->bottom, node2);
     }
-};
+    
+    else
+    {
+        root = node2;
+        root->bottom = merge (node1, node2->bottom);
+    }
+    
+    return root;
+}
     
 Node *flatten(Node *root)
 {
-    priority_queue<Node*, vector<Node*>, comp> nodes;
-    nodes.emplace(root);
-    Node* dummy = new Node(-1);
-    Node* temp = dummy;
+    if (root == NULL || root->next == NULL)
+        return root;
+        
+    root->next = flatten (root->next);
+    root = merge (root, root->next);
     
-    while (!nodes.empty())
-    {
-        auto node = nodes.top();
-        Node* curr = new Node(node->data);
-        temp->bottom = curr;
-        temp = temp->bottom;
-        nodes.pop();
-       
-        if (node->next)
-            nodes.emplace(node->next);
-            
-        if (node->bottom)
-            nodes.emplace(node->bottom);
-    }
-    
-    return dummy->bottom;
+    return root;
 }
 
