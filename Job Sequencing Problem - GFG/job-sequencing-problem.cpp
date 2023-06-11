@@ -30,32 +30,44 @@ class Solution
     
     static bool comp (Job &j1, Job &j2)
     {
-        return j1.profit > j2.profit;
+        return j1.dead < j2.dead;
     }
+    
+    struct pqComp {
+      
+        bool operator()(Job &j1, Job &j2)
+        {
+            return j1.profit < j2.profit;
+        }
+    };
     
     vector<int> JobScheduling(Job arr[], int n) 
     { 
         sort (arr, arr + n, comp);
         
-        int maxDead = 0;
-        
-        for (int i = 0; i < n; i++)
-            maxDead = max (maxDead, arr[i].dead);
+        priority_queue<Job, vector<Job>, pqComp> pq;
             
-        vector<int> slots (maxDead + 1, -1);
         int jobs = 0, profit = 0;
         
-        for (int i = 0; i < n; i++)
+        for (int i = n - 1; i >= 0; i--)
         {
-            for (int j = arr[i].dead; j >= 1; j--)
+            int slots;
+            
+            if (i == 0)
+                slots = arr[i].dead;
+                
+            else
+                slots = arr[i].dead - arr[i - 1].dead;
+                
+            pq.emplace(arr[i]);
+            
+            while(slots-- && !pq.empty())
             {
-                if (slots[j] == -1)
-                {
-                    jobs++;
-                    profit += arr[i].profit;
-                    slots[j] = arr[i].id;
-                    break;
-                }
+                auto job = pq.top();
+                pq.pop();
+                
+                jobs++;
+                profit += job.profit;
             }
         }
         
