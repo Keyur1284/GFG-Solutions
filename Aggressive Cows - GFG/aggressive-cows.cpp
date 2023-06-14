@@ -30,7 +30,7 @@ public:
     
         sort (stalls.begin(), stalls.end());
         
-        int low = 0, high = 1e9, mid, ans;
+        int low = 1, high = 1e9, mid, ans;
         
         while (low <= high)
         {
