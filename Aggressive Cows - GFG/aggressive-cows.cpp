@@ -20,10 +20,13 @@ public:
             {
                 cows++;
                 last = stalls[i];
+                
+                if (cows == k)
+                    return true;
             }
         }
         
-        return (cows >= k);
+        return false;
     }
 
     int solve(int n, int k, vector<int> &stalls) {
