@@ -33,14 +33,18 @@ public:
                 pos += upper_bound(matrix[i].begin(), matrix[i].end(), mid) - matrix[i].begin();
             }
  
-            if (pos <= req)
-                low = mid + 1;
+            if (pos > req)
+            {
+                ans = mid;
+                high = mid - 1;
+            }
+                
                 
             else
-                high = mid - 1;
+                low = mid + 1;
         }
         
-        return low;
+        return ans;
     }
 };
 
