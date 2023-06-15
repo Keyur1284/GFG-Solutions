@@ -8,19 +8,20 @@ class Solution{
 public:
 	int rowWithMax1s(vector<vector<int> > arr, int n, int m) {
 	    
-	    int maxi = 0, i = 0, ans = -1;
+	    int ans = -1, col = m - 1;
 	    
-	    for (auto &row : arr)
+	    for (int i = 0; i < n; i++)
 	    {
-	        int index = lower_bound(row.begin(), row.end(), 1) - row.begin();
+	        bool one = false;
 	        
-	        if (m - index > maxi)
+	        while (col >= 0 && arr[i][col])
 	        {
-	            maxi = m - index;
-	            ans = i;
+	            col--;
+	            one = true;
 	        }
 	        
-	        i++;
+	        if (one)
+	            ans = i;
 	    }
 	    
 	    return ans;
