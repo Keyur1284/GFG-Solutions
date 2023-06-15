@@ -15,9 +15,12 @@ class Solution {
         for (int i = 0; i < n - 1; i++) 
         {
             count += (stations[i + 1] - stations[i]) / mid;
+            
+            if (count > k)
+                return false;
         }
         
-        return count <= k;
+        return true;
     }
   
     double findSmallestMaxDist(vector<int> &stations, int k){
