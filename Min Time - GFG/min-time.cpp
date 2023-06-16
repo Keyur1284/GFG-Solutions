@@ -15,8 +15,7 @@ class Solution {
         {
             if (pos.find(types[i]) == pos.end())
             {
-                pos[types[i]].push_back(locations[i]);
-                pos[types[i]].push_back(locations[i]);
+                pos[types[i]] = {locations[i], locations[i]};
             }
             
             else
