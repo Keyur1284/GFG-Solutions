@@ -13,28 +13,24 @@ class Solution
     //Function to find if there is a celebrity in the party or not.
     int celebrity(vector<vector<int>>& peeps, int n) 
     {
-        for (int col = 0; col < n; col++)
+        int i = 0, j = n - 1;
+        
+        while (i < j)
         {
-            int sum = 0;
-            
-            for (int row = 0; row < n; row++)
-            {
-                sum += peeps[row][col];
-            }
-            
-            if (sum == n - 1)
-            {
-                sum = 0;
+            if (peeps[i][j])
+                i++;
                 
-                for (int i = 0; i < n; i++)
-                    sum += peeps[col][i];
-                
-                if (sum == 0)
-                    return col;
-            }
+            else
+                j--;
         }
         
-        return -1;
+        for (int k = 0; k < n; k++)
+        {
+            if (i != k && (peeps[i][k] == 1 || peeps[k][i] == 0))
+                return -1;
+        }
+        
+        return i;
     }
 };
 
