@@ -23,19 +23,7 @@ class Solution {
             flag = !flag;
         }
         
-        if (flag)
-        {
-            while (left != right)
-                left++;
-        }
-        
-        else
-        {
-            while (right != left)
-                right--;
-        }
-        
-        return (flag)? left : right;
+        return (flag) ? right : left;
     }
 };
 
