@@ -9,35 +9,54 @@ class Solution
     public:
         vector <int> search(string pat, string txt)
         {
-            int patLen = pat.length();
-            string s = pat + "$" + txt;
-            int n = s.size();
+            int n = txt.size(), m = pat.size();
             
-            vector<int> z(n, 0);
+            vector<int> lps(m, 0);
+            int len = 0;
             
-            int left = 0, right = 0;
-            
-            for (int i = 1; i < n; i++)
+            for (int i = 1; i < m; )
             {
-                if (right - i > 0)
-                    z[i] = min(right - i, z[i - left]);
-                    
-                while (i + z[i] < n && s[z[i]] == s[i + z[i]])
-                    z[i]++;
-                    
-                if (i + z[i] > right)
+                if (pat[i] == pat[len])
                 {
-                    left = i;
-                    right = i + z[i];
+                    len++;
+                    lps[i] = len;
+                    i++;
+                }
+                
+                else
+                {
+                    if (len == 0)
+                        i++;
+                        
+                    else
+                        len = lps[len - 1];
                 }
             }
             
             vector<int> ans;
             
-            for (int i = 1; i < n; i++)
+            for (int i = 0, j = 0; i < n; )
             {
-                if (z[i] == patLen)
-                    ans.emplace_back(i - patLen);
+                if (txt[i] == pat[j])
+                {
+                    i++;
+                    j++;
+                    
+                    if (j == m)
+                    {
+                        ans.emplace_back(i - j + 1);
+                        j = lps[j - 1];
+                    }
+                }
+                
+                else
+                {
+                    if (j == 0)
+                        i++;
+                        
+                    else
+                        j = lps[j - 1];
+                }
             }
             
             return ans;
