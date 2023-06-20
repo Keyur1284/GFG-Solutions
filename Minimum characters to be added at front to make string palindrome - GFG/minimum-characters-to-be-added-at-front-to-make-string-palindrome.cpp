@@ -17,27 +17,27 @@ public:
         
         int n = s.size();
         
-        vector<int> lps (n, 0);
-        int len = 0;
+        vector<int> z (n, 0), lps(n, 0);
         
-		for (int i = 1; i < n; )
+        int left = 0, right = 0;
+		
+		for (int i = 1; i < n; i++)
 		{
-			if (s[i] == s[len])
+			if (right - i > 0)
+				z[i] = min(right - i, z[i - left]);
+				
+			while (i + z[i] < n && s[z[i]] == s[i + z[i]])
+				z[i]++;
+				
+			if (i + z[i] > right)
 			{
-				len++;
-				lps[i] = len;
-				i++;
-			}
-			
-			else
-			{
-				if (len == 0)
-					i++;
-					
-				else
-					len = lps[len - 1];
+				left = i;
+				right = i + z[i];
 			}
 		}
+		
+		for (int i = 1; i < n; i++)
+                lps[i + z[i] - 1] = max(lps[i + z[i] - 1], z[i]);
 		
 		return m - lps.back();
     }
