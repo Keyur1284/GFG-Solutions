@@ -14,18 +14,22 @@ class Solution
     vector<vector<int>> uniqueRow(int mat[MAX][MAX],int row,int col)
     {
         vector<vector<int>> uniqueRows;
-        set<vector<int>> unique;
+        unordered_set<string> unique;
         
         for (int i = 0; i < row; i++)
         {
             vector<int> row;
+            string s = "";
             
             for (int j = 0; j < col; j++)
-                row.emplace_back(mat[i][j]);
-                
-            if (unique.find(row) == unique.end())
             {
-                unique.emplace(row);
+                row.emplace_back(mat[i][j]);
+                s += mat[i][j] + '0';
+            }
+                
+            if (unique.find(s) == unique.end())
+            {
+                unique.emplace(s);
                 uniqueRows.emplace_back(row);
             }
         }
