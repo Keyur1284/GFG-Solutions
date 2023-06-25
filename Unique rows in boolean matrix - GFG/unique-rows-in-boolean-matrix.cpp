@@ -7,32 +7,85 @@ vector<vector<int>> uniqueRow(int M[MAX][MAX],int row,int col);
 
 
 // } Driver Code Ends
+
+class TrieNode {
+public:
+
+    vector<TrieNode*> child;
+
+    TrieNode ()
+    {
+        child.assign(2, NULL);
+    }
+
+    bool containsKey (int k)
+    {
+        return (child[k] != NULL);
+    }
+
+    void put (int k, TrieNode* node)
+    {
+        child[k] = node;
+    }
+
+    TrieNode* get (int k)
+    {
+        return child[k];
+    }
+};
+
+class Trie {
+private:
+
+    TrieNode* root;
+
+public:
+
+    Trie() 
+    {
+        
+        root = new TrieNode();
+    }
+    
+    void findUniqueRows(int mat[MAX][MAX], int row, int col, vector<vector<int>> &uniqueRows) {
+        
+        for (int i = 0; i < row; i++)
+        {
+            TrieNode* node = root;
+            bool flag = false;
+            vector<int> currRow;
+
+            for (int j = 0; j < col; j++)
+            {
+                int num = mat[i][j];
+                currRow.emplace_back(num);
+                
+                if (node->containsKey(num) == NULL)
+                {
+                    flag = true;
+                    node->put(num, new TrieNode());
+                }
+    
+                node = node->get(num);
+            }
+            
+            if (flag)
+                uniqueRows.emplace_back(currRow);
+        }
+    }
+};
+
+
 class Solution
 {
     public:
     // #define MAX 1000
     vector<vector<int>> uniqueRow(int mat[MAX][MAX],int row,int col)
     {
+        Trie obj;
         vector<vector<int>> uniqueRows;
-        unordered_set<string> unique;
         
-        for (int i = 0; i < row; i++)
-        {
-            vector<int> row;
-            string s = "";
-            
-            for (int j = 0; j < col; j++)
-            {
-                row.emplace_back(mat[i][j]);
-                s += mat[i][j] + '0';
-            }
-                
-            if (unique.find(s) == unique.end())
-            {
-                unique.emplace(s);
-                uniqueRows.emplace_back(row);
-            }
-        }
+        obj.findUniqueRows(mat, row, col, uniqueRows);
         
         return uniqueRows;
     }
