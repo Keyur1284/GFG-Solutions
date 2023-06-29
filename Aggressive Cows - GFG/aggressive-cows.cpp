@@ -33,23 +33,20 @@ public:
     
         sort (stalls.begin(), stalls.end());
         
-        int low = 1, high = 1e9, mid, ans;
+        int low = 1, high = stalls.back() - stalls[0], mid;
         
         while (low <= high)
         {
             mid = (low + high) >> 1;
             
             if (check(mid, n, k, stalls))
-            {
-                ans = mid;
                 low = mid + 1;
-            }
             
             else
                 high = mid - 1;
         }
         
-        return ans;
+        return high;
     }
 };
 
