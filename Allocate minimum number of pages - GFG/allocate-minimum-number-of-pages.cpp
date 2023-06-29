@@ -13,9 +13,9 @@ class Solution
     public:
     //Function to find minimum number of pages.
     
-    bool check (long long pages, int arr[], int n, int m)
+    bool check (int pages, int arr[], int n, int m)
     {
-        long long students = 1, curr = 0;
+        int students = 1, curr = 0;
         
         for (int i = 0; i < n; i++)
         {
@@ -43,25 +43,22 @@ class Solution
         if (m > n)
             return -1;
         
-        long long low = *min_element(arr, arr + n);
-        long long high = accumulate(arr, arr + n, 0LL);
-        long long mid, ans = -1;
+        int low = *max_element(arr, arr + n);
+        int high = accumulate(arr, arr + n, 0);
+        int mid;
         
         while (low <= high)
         {
             mid = (low + high) >> 1;
             
             if (check(mid, arr, n, m))
-            {
-                ans = mid;
                 high = mid - 1;
-            }
             
             else
                 low = mid + 1;
         }
         
-        return ans;
+        return low;
     }
 };
 
