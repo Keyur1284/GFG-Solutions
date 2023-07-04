@@ -13,20 +13,17 @@ class Solution{
         
         long long prod = 1;
         int count = 0;
-        deque<int> dq;
         
-        for (int i = 0; i < n; i++)
+        for (int start = 0, end = 0; end < n; end++)
         {
-            prod *= a[i];
-            dq.push_back(a[i]);
+            prod *= a[end];
             
-            while (!dq.empty() && prod >= k)
+            while (start <= end && prod >= k)
             {
-                prod /= dq.front();
-                dq.pop_front();
+                prod /= a[start++];
             }
             
-            count += dq.size();
+            count += end - start + 1;
         }
         
         return count;
