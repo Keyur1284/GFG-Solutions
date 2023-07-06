@@ -17,15 +17,28 @@ class Solution
         if (dp[n][k] != -1)
             return dp[n][k];
             
-        int steps = INT_MAX;
+        int ans = INT_MAX;
         
-        for (int flr = 1; flr <= k; flr++)
+        int low = 1, high = k, mid;
+        
+        while (low <= high)
         {
-            int ans = 1 + max(solve (n - 1, flr - 1, dp), solve (n, k - flr, dp));
-            steps = min(ans, steps);
+            mid = (low + high) >> 1;
+            
+            int left = solve (n - 1, mid - 1, dp);
+            int right = solve (n, k - mid, dp);
+            
+            if (left < right)
+                low = mid + 1;
+                
+            else
+                high = mid - 1;
+                
+            int steps = 1 + max(left, right);
+            ans = min(ans, steps);
         }
         
-        return dp[n][k] = steps;
+        return dp[n][k] = ans;
     }
     
     int eggDrop(int n, int k) 
