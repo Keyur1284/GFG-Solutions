@@ -13,31 +13,34 @@ class Solution{
   
     int cutRod(int price[], int n) {
         
-        vector<vector<int>> dp (n, vector<int> (n + 1, 0));
+        vector<int> dp (n + 1, 0);
 
         for (int index = 0; index < n; index++)
         {
             int rodLength = index + 1;
+            vector<int> temp (n + 1, 0);
             
             for (int k = 1; k <= n; k++)
             {
                 if (index == 0)
                 {
-                    dp[index][k] = k * price[index];
+                    temp[k] = k * price[index];
                     continue;
                 }
                 
-                int notCut = 0 + dp[index - 1][k];
+                int notCut = 0 + dp[k];
                 int cut = INT_MIN;
                 
                 if (rodLength <= k)
-                    cut = price[index] + dp[index][k - rodLength];
+                    cut = price[index] + temp[k - rodLength];
                     
-                dp[index][k] = max(cut, notCut);
+                temp[k] = max(cut, notCut);
             }
+            
+            dp = temp;
         }
         
-        return dp[n - 1][n];
+        return dp[n];
     }
 };
 
