@@ -10,45 +10,36 @@ using namespace std;
 class Solution{
 public:
     
-    bool isPalindrome (string &s, int start, int end)
-    {
-        while (start <= end)
-        {
-            if (s[start++] != s[end--])
-                return false;
-        }
-        
-        return true;
-    }
-    
-    int solve (int start, int len, vector<int> &dp, string &s)
+    int solve (int start, int len, vector<vector<bool>> &dp, vector<int> &cost, string &s)
     {
         if (start == len)
             return 0;
             
-        if (dp[start] != -1)
-            return dp[start];
+        if (cost[start] != -1)
+            return cost[start];
             
         int minCost = INT_MAX;
         
         for (int end = start; end < len; end++)
         {
-            if (isPalindrome(s, start, end))
+            if (s[end] == s[start] && (end - start <= 2 || dp[start + 1][end - 1]))
             {
-                int cost = 1 + solve (end + 1, len, dp, s);
-                minCost = min(cost, minCost);
+                dp[start][end] = true;
+                int currcost = 1 + solve (end + 1, len, dp, cost, s);
+                minCost = min(currcost, minCost);
             }
         }
         
-        return dp[start] = minCost;
+        return cost[start] = minCost;
     }
 
-    int palindromicPartition(string str)
+    int palindromicPartition(string &str)
     {
         int len = str.length();
-        vector<int> dp(len, -1);
+        vector<vector<bool>> dp(len, vector<bool> (len, false));
+        vector<int> cost(len, -1);
         
-        return solve (0, len, dp, str) - 1;
+        return solve (0, len, dp, cost, str) - 1;
     }
 };
 
