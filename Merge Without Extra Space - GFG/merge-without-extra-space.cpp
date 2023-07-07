@@ -9,17 +9,51 @@ class Solution{
         //Function to merge the arrays.
         void merge(long long arr1[], long long arr2[], int n, int m) 
         { 
-            for (int i = n - 1, j = 0; i >= 0 && j < m; i--, j++)
+            long long mask = (1 << 25) - 1;
+            int i = 0, j = 0, k = 0;
+            
+            while (i < n && j < m)
             {
-                if (arr1[i] > arr2[j])
-                    swap(arr1[i], arr2[j]);
-                    
-                else
-                    break;
+                long long newVal, org1, org2;
+                
+                org1 = (arr1[i] & mask);
+                org2 = (arr2[j] & mask);
+                
+                newVal = (org1 < org2) ? (org1 << 30) : (org2 << 30);
+                (org1 < org2) ? i++ : j++;
+                
+                (k < n) ? arr1[k++] |= newVal : arr2[k++ - n] |= newVal;
             }
             
-            sort (arr1, arr1 + n);
-            sort (arr2, arr2 + m);
+            while (i < n)
+            {
+                long long newVal, org1;
+                
+                org1 = (arr1[i] & mask);
+
+                newVal = (org1 << 30);
+                i++;
+                
+                (k < n) ? arr1[k++] |= newVal : arr2[k++ - n] |= newVal;
+            }
+            
+            while (j < m)
+            {
+                long long newVal, org2;
+                
+                org2 = (arr2[j] & mask);
+
+                newVal = (org2 << 30);
+                j++;
+                
+                (k < n) ? arr1[k++] |= newVal : arr2[k++ - n] |= newVal;
+            }
+            
+            for (int i = 0; i < n; i++)
+                arr1[i] >>= 30;
+                
+            for (int j = 0; j < m; j++)
+                arr2[j] >>= 30;
         } 
 };
 
