@@ -104,44 +104,64 @@ class Solution
     //Function to return a list of integers denoting the node 
     //values of both the BST in a sorted order.
     
-    void DFS (Node* node, vector<int> &tree)
+    void pushNodes (stack<Node*> &st, Node* node)
     {
-        if (node == NULL)
-            return;
-            
-        DFS (node->left, tree);
-        tree.emplace_back(node->data);
-        DFS (node->right, tree);
+        while(node)
+        {
+            st.emplace(node);
+            node = node->left;
+        }
     }
     
     vector<int> merge(Node *root1, Node *root2)
     {
-       vector<int> tree1, tree2;
+       stack<Node*> tree1, tree2;
        
-       DFS (root1, tree1);
-       DFS (root2, tree2);
+       pushNodes (tree1, root1);
+       pushNodes (tree2, root2);
        
        vector<int> merged;
        
-       int i = 0, j = 0, n = tree1.size(), m = tree2.size();
-       
-       while (i < n && j < m)
+       while (!tree1.empty() && !tree2.empty())
        {
-            if (tree1[i] <= tree2[j])
-                merged.emplace_back(tree1[i++]);
-                
-            else
-                merged.emplace_back(tree2[j++]);
+           int val1 = tree1.top()->data;
+           int val2 = tree2.top()->data;
+           
+           if (val1 <= val2)
+           {
+               merged.emplace_back(val1);
+               Node* node = tree1.top();
+               tree1.pop();
+               pushNodes(tree1, node->right);
+           }
+           
+           else
+           {
+               merged.emplace_back(val2);
+               Node* node = tree2.top();
+               tree2.pop();
+               pushNodes(tree2, node->right);
+           }
        }
        
-       while (i < n)
+       while (!tree1.empty())
        {
-          merged.emplace_back(tree1[i++]); 
+           int val1 = tree1.top()->data;
+           
+           merged.emplace_back(val1);
+           Node* node = tree1.top();
+           tree1.pop();
+           pushNodes(tree1, node->right);
        }
        
-       while (j < m)
+       while (!tree2.empty())
        {
-           merged.emplace_back(tree2[j++]);
+           int val2 = tree2.top()->data;
+           
+           merged.emplace_back(val2);
+           Node* node = tree2.top();
+           tree2.pop();
+           pushNodes(tree2, node->right);
        }
        
        return merged;
