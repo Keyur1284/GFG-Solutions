@@ -15,7 +15,9 @@ class Solution {
 		    for (auto &it : A)
 		    {
 		        freq[it]++;
-		        q.emplace(it);
+		        
+		        if (freq[it] == 1)
+		            q.emplace(it);
 		        
 		        while (!q.empty() && freq[q.front()] != 1)
 		            q.pop();
