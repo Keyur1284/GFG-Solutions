@@ -9,29 +9,25 @@ class Solution {
        int LongestRepeatingSubsequence(string str){
 		    
 		    int n = str.length();
-		    vector<int> dp (n + 1, 0);
+		    vector<vector<int>> dp (n + 1, vector<int> (n + 1, 0));
 		    
-		    for (int i = n - 1; i >= 0; i--)
+		    for (int i = 1; i <= n; i++)
 		    {
-		        vector<int> curr (n + 1, 0);
-		        
-		        for (int j = n - 1; j >= 0; j--)
+		        for (int j = 1; j <= n; j++)
 		        {
-		            if (str[i] == str[j] && i != j)
+		            if (str[i - 1] == str[j - 1] && i != j)
 		            {
-		                curr[j] = 1 + dp[j + 1];
+		                dp[i][j] = 1 + dp[i - 1][j - 1];
 		            }
 		            
 		            else
 		            {
-		                curr[j] = max(dp[j], curr[j + 1]);
+		                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
 		            }
 		        }
-		        
-		        dp = curr;
 		    }
 		    
-		    return dp[0];
+		    return dp[n][n];
 		}
 
 };
