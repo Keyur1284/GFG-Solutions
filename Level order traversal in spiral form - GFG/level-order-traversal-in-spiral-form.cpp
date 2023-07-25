@@ -129,35 +129,44 @@ struct Node
 //Function to return a list containing the level order traversal in spiral form.
 vector<int> findSpiral(Node *root)
 {
-    queue<Node*> BFS;
-    BFS.emplace(root);
+    deque<Node*> BFS;
+    BFS.push_back(root);
     int level = 0;
     vector<int> spiral;
     
     while (!BFS.empty())
     {
         int size = BFS.size();
-        vector<int> currLevel;
-        
+
         while (size--)
         {
-            Node* node = BFS.front();
-            BFS.pop();
-            currLevel.emplace_back(node->data);
-            
-            if (node->left)
-                BFS.emplace(node->left);
+            if (level % 2 == 0)
+            {
+                Node* node = BFS.back();
+                BFS.pop_back();
+                spiral.emplace_back(node->data);
                 
-            if (node->right)
-                BFS.emplace(node->right);
+                if (node->right)
+                    BFS.push_front(node->right);
+                    
+                if (node->left)
+                    BFS.push_front(node->left);
+            }
+            
+            else
+            {
+                Node* node = BFS.front();
+                BFS.pop_front();
+                spiral.emplace_back(node->data);
+                
+                if (node->left)
+                    BFS.push_back(node->left);
+                
+                if (node->right)
+                    BFS.push_back(node->right);
+            }
         }
-        
-        if (level % 2 == 0)
-            reverse(currLevel.begin(), currLevel.end());
-            
-        for (auto &it : currLevel)
-            spiral.emplace_back(it);
-            
+
         level++;
     }
     
