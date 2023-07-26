@@ -112,36 +112,58 @@ struct Node
 */
 // your task is to complete this function
 
-bool findPath (Node* node, int target, vector<int> &path)
+void countNodes (Node* node, int &count)
 {
     if (node == NULL)
-        return false;
+        return;
         
-    path.emplace_back(node->data);
+    countNodes (node->left, count);
+    count++;
+    countNodes (node->right, count);
+}
+
+void findAnces (Node *root, vector<int> &ances)
+{
+    queue<Node*> BFS;
+    ances[root->data] = -1;
+    BFS.emplace(root);
     
-    if (path.back() == target)
-        return true;
+    while (!BFS.empty())
+    {
+        Node* curr = BFS.front();
+        BFS.pop();
         
-    bool left = findPath(node->left, target, path);
+        if (curr->left)
+        {
+            ances[curr->left->data] = curr->data;
+            BFS.emplace(curr->left);
+        }
         
-    if (left)    
-        return true;
-        
-    bool right = findPath(node->right, target, path);
-        
-    if (right)    
-        return true;
-        
-    path.pop_back();
-    return false;
+        if (curr->right)
+        {
+            ances[curr->right->data] = curr->data;
+            BFS.emplace(curr->right);
+        }
+    }
 }
 
 int kthAncestor(Node *root, int k, int node)
 {
-    vector<int> path;
-    findPath (root, node, path);
+    int count = 0;
+    countNodes (root, count);
     
-    int n = path.size();
+    vector<int> ances(count + 1, 0);
     
-    return (n - 1 - k >= 0)? path[n - 1 - k] : -1;
+    findAnces(root, ances);
+    
+    while (node != -1)
+    {
+        node = ances[node];
+        k--;
+        
+        if (k == 0)
+            break;
+    }
+    
+    return node;
 }
