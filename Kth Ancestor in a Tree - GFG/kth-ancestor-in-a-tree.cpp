@@ -122,10 +122,14 @@ bool findPath (Node* node, int target, vector<int> &path)
     if (path.back() == target)
         return true;
         
-    if (findPath(node->left, target, path))
+    bool left = findPath(node->left, target, path);
+        
+    if (left)    
         return true;
         
-    if (findPath(node->right, target, path))
+    bool right = findPath(node->right, target, path);
+        
+    if (right)    
         return true;
         
     path.pop_back();
