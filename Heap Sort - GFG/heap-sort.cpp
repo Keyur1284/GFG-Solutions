@@ -36,12 +36,6 @@ class Solution
     { 
         for (int i = n/2 - 1; i >= 0; i--)
             heapify (arr, n, i);
-            
-        for (int i = n - 1; i >= 0; i--)
-        {
-            swap(arr[i], arr[0]);
-            heapify(arr, i, 0);
-        }
     }
 
     
@@ -50,6 +44,12 @@ class Solution
     void heapSort(int arr[], int n)
     {
         buildHeap(arr, n);
+        
+        for (int i = n - 1; i >= 0; i--)
+        {
+            swap(arr[i], arr[0]);
+            heapify(arr, i, 0);
+        }
     }
 };
 
