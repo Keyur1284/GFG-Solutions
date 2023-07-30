@@ -110,7 +110,6 @@ struct Node {
 class Solution{
   public:
     // returns the inorder successor of the Node x in BST (rooted at 'root')
-    
     Node* findSuccessor (Node* node)
     {
         while (node->left)
