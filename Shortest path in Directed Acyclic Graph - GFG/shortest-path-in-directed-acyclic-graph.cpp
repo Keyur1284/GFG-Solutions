@@ -8,53 +8,23 @@ using namespace std;
 // User function Template for C++
 class Solution {
   public:
-    
-    void TopoSortDFS (int node, vector<bool> &vis, stack<int> &st, vector<pair<int, int>> adj[])
-    {
-        vis[node] = true;
+     vector<int> shortestPath(int N,int M, vector<vector<int>>& edges){
         
-        for (auto &it : adj[node])
-        {
-            if (!vis[it.first])
-                TopoSortDFS (it.first, vis, st, adj);
-        }
-        
-        st.emplace(node);
-    }
-  
-    vector<int> shortestPath(int N,int M, vector<vector<int>>& edges){
-        
-        vector<pair<int, int>> adj[N];
-        
-        for (auto &it : edges)
-            adj[it[0]].emplace_back(it[1], it[2]);
-            
-        vector<bool> vis(N, false);
-        stack<int> st;
-        
-        TopoSortDFS (0, vis, st, adj);
-        
-        vector<int> dist(N, INT_MAX);
+        vector<int> dist(N, 1e9);
         dist[0] = 0;
         
-        while (!st.empty())
+        for (int i = 0; i < N - 1; i++)
         {
-            int node = st.top();
-            st.pop();
-            
-            if (dist[node] != INT_MAX)
+            for (auto &it : edges)
             {
-                for (auto &it : adj[node])
-                {
-                    if (dist[node] + it.second < dist[it.first])
-                        dist[it.first] = dist[node] + it.second;
-                }
+                if (dist[it[0]] != 1e9 && dist[it[0]] + it[2] < dist[it[1]])
+                    dist[it[1]] = dist[it[0]] + it[2];
             }
         }
         
         for (auto &it : dist)
         {
-            if (it == INT_MAX)
+            if (it == 1e9)
                 it = -1;
         }
         
