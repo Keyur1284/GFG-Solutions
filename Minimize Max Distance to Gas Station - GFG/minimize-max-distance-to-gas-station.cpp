@@ -41,9 +41,10 @@ class Solution {
                 low = mid;
         }
         
-        return round(ans * 100)/100;
+        return round(high * 100)/100;
     }
 };
+
 
 //{ Driver Code Starts.
 int main()
