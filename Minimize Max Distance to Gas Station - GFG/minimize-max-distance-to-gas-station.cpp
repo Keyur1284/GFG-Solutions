@@ -25,7 +25,14 @@ class Solution {
   
     double findSmallestMaxDist(vector<int> &stations, int k){
       
-        double low = 0.0, high = stations.back() - stations[0], mid, ans;
+        int n = stations.size();
+        double low = 0.0, high = 0.0, mid, ans;
+        
+        for (int i = 0; i < n - 1; i++) 
+        {
+            double diff = stations[i + 1] - stations[i];
+            high = max(high, diff);
+        }
         
         while (low + 1e-6 < high)
         {
