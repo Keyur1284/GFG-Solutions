@@ -12,46 +12,10 @@ public:
 		of occurrences of x, otherwise returns 0. */
 	int count(int arr[], int n, int x) {
 	    
-	    int first = -1, last = -1, low = 0, high = n - 1, ans = n, mid;
-
-        while (low <= high)
-        {
-            mid = (low + high) >> 1;
-
-            if (arr[mid] >= x)
-            {
-                ans = mid;
-                high = mid - 1;
-            }
-
-            else 
-                low = mid + 1;
-        }
-
-        if (ans == n || arr[ans] != x)
-            return 0;
-
-        first = ans;
-
-        low = 0, high = n - 1, ans = n;
-
-        while (low <= high)
-        {
-            mid = (low + high) >> 1;
-
-            if (arr[mid] <= x)
-            {
-                ans = mid;
-                low = mid + 1;
-            }
-
-            else 
-                high = mid - 1;
-        }
-
-        last = ans;
-
-        return (last - first + 1);
+	    int low = lower_bound(arr, arr + n, x) - arr;
+	    int high = upper_bound(arr, arr + n, x) - arr;
+	    int occ = high - low;
+	    return occ;
 	}
 };
 
