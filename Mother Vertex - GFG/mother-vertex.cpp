@@ -37,11 +37,9 @@ class Solution
 	    vis.assign(V, false);
 	    DFS(mother, vis, adj);
 	    
-	    for (int i = 0; i < V; i++)
-	    {
-	        if (!vis[i])
+	    for (auto it : vis)
+	        if(!it)
 	            return -1;
-	    }
 	            
 	    return mother;
 	}
