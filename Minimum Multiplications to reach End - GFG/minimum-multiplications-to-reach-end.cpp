@@ -12,6 +12,9 @@ class Solution {
   public:
     int minimumMultiplications(vector<int>& arr, int start, int end) {
         
+        if (start == end)
+            return 0;
+        
         int MOD = 100000;
         vector<int> dist(100000, INT_MAX);
         queue<int> BFS;
@@ -43,6 +46,7 @@ class Solution {
         return -1;
     }
 };
+
 
 
 //{ Driver Code Starts.
