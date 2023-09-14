@@ -11,16 +11,9 @@ class Solution{
     
     int solve (int index, int sum, vector<vector<int>> &dp, int arr[])
     {
-        if (index == 0)
+        if (index < 0)
         {
-            if (sum == 0 && arr[index] == 0)
-                return 2;
-            
-            if (sum == 0 || arr[index] == sum)
-                return 1;
-            
-            else
-                return 0;
+            return (sum == 0);
         }
             
         if (dp[index][sum] != -1)
