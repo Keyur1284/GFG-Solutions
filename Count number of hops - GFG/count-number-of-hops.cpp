@@ -11,35 +11,31 @@ class Solution
     
     int MOD = 1e9 + 7;
     
-    long long solve (int index, int n, vector<long long> &dp)
-    {
-        if (index == n)
-            return 1;
-            
-        if (dp[index] != -1)
-            return dp[index];
-            
-        long long ways = 0;
-        
-        for (int i = 1; i <= 3; i++)
-        {
-            if (index + i <= n)
-            {
-                ways += solve(index + i, n, dp);
-                ways %= MOD;
-            }
-            
-            else
-                break;
-        }
-        
-        return dp[index] = ways;
-    }
-    
     long long countWays(int n)
     {
-        vector<long long> dp(n + 5, -1);
-        return solve(0, n, dp);
+        vector<long long> dp(n + 5, 0);
+        dp[n] = 1;
+        
+        for (int index = n - 1; index >= 0; index--)
+        {
+            long long ways = 0;
+            
+            for (int steps = 1; steps <= 3; steps++)
+            {
+                if (index + steps <= n)
+                {
+                    ways += dp[index + steps];
+                    ways %= MOD;
+                }
+                
+                else
+                    break;
+            }
+            
+            dp[index] = ways;
+        }
+        
+        return dp[0];
     }
 };
 
