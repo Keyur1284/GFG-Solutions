@@ -6,42 +6,49 @@ using namespace std;
 
 
 // } Driver Code Ends
-//Backend complete function template for C++
+//User function template for C++
 
 class Solution
 {
   public:
-    long long int atMostK (string s, int k)
+    
+    long long slidingWindow (string &s, int k)
     {
-    	if (k < 0) return 0;
-    
-    	int i = 0, j = 0, cnt = 0;
-    	long long int res = 0;
-    	int m[26] = {0};
-    
-    	while (j < s.length ())
+        int n = s.length(), unique = 0;
+    	vector<int> freq(26, 0); 
+    	long long count = 0;
+    	
+    	for (int start = 0, end = 0; end < n;  end++)
     	{
-    		m[s[j] - 'a']++;
-    		if (m[s[j] - 'a'] == 1) cnt++;
-    
-    		while (cnt > k)
-    		{
-    			m[s[i] - 'a']--;
-    			if (m[s[i] - 'a'] == 0) cnt--;
-    
-    			i++;
-    		}
-    
-    		res += (j - i + 1);
-    		j++;
+    	    freq[s[end] - 'a']++;
+    	    
+    	    if (freq[s[end] - 'a'] == 1)
+    	        unique++;
+    	    
+    	    while (unique > k && start <= end)
+    	    {
+    	        freq[s[start] - 'a']--;
+    	        
+    	        if (freq[s[start] - 'a'] == 0)
+    	            unique--;
+    	            
+    	        start++;
+    	    }
+    	    
+	        int len = end - start + 1;
+	        count += len;
     	}
-    	return res;
+    	
+    	return count;
     }
-
+  
     long long int substrCount (string s, int k) {
-    	return atMostK (s, k) - atMostK (s, k - 1);
+    	
+    	long long ans = slidingWindow(s, k) - slidingWindow(s, k - 1);
+    	return ans;
     }
 };
+
 
 //{ Driver Code Starts.
 
