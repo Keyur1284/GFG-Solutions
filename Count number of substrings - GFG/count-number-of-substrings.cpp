@@ -11,10 +11,10 @@ using namespace std;
 class Solution
 {
   public:
-    
-    long long slidingWindow (string &s, int k)
-    {
-        int n = s.length(), unique = 0;
+  
+    long long int substrCount (string s, int k) {
+    	
+    	int n = s.length(), unique = 0, extra = 0;
     	vector<int> freq(26, 0); 
     	long long count = 0;
     	
@@ -33,19 +33,22 @@ class Solution
     	            unique--;
     	            
     	        start++;
+    	        extra = 0;
     	    }
     	    
-	        int len = end - start + 1;
-	        count += len;
+	        if (unique == k)
+	        {
+	            while(freq[s[start] - 'a'] > 1)
+	            {
+	                extra++;
+	                freq[s[start++] - 'a']--;
+	            }
+	            
+	            count += extra + 1;
+	        }
     	}
     	
     	return count;
-    }
-  
-    long long int substrCount (string s, int k) {
-    	
-    	long long ans = slidingWindow(s, k) - slidingWindow(s, k - 1);
-    	return ans;
     }
 };
 
