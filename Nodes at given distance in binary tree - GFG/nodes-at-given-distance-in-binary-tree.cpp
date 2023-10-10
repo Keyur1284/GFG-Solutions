@@ -95,83 +95,51 @@ struct Node
 };
 */
 
-class Solution{
+class Solution
+{
+private:
+    
 public:
+
+    vector<int>ans;
     
-    int targetData;
-    Node* targetNode = NULL;
-    
-    unordered_map<Node*, Node*> parent;
-    unordered_set<Node*> vis;
-    
-    void findPar (Node* node, Node* par)
+    void calc(map<Node*, Node*>& mp, Node* root, Node* prev, Node* &dest, int k)
     {
-        if (node == NULL)
-            return;
-            
-        if (par)
-            parent[node] = par;
-            
-        if (node->data == targetData)
-            targetNode = node;
+        if(!root) return;
         
-        findPar(node->left, node);
-        findPar(node->right, node);
+        mp[root] = prev;
+        if(root->data == k && !dest) dest = root;
+        
+        calc(mp, root->left, root, dest, k);
+        calc(mp, root->right, root, dest, k);
     }
     
+    void solve(int k, map<Node*, Node*>& mp, Node* root, Node* prev)
+    {
+        if(!root) return;
+        if(k == 0) 
+        {
+            ans.push_back(root->data);
+            return;
+        }
+        
+        if(root->left != prev) solve(k-1, mp, root->left, root);
+        if(root->right != prev) solve(k-1, mp, root->right, root);
+        if(mp[root] != prev) solve(k-1, mp, mp[root], root);
+    }
+
     vector <int> KDistanceNodes(Node* root, int target , int k)
     {
-        this->targetData = target;
-        findPar(root, NULL);
+        ans.clear();
+        map<Node* , Node*>mp;
         
-        queue<Node*> BFS;
-        BFS.emplace(targetNode);
-        vis.emplace(targetNode);
+        Node* dest = NULL;
+        calc(mp, root, NULL, dest, target);
+        // cout<<dest->data<<endl;
+        solve(k, mp, dest, NULL);
         
-        while (k > 0 && !BFS.empty())
-        {
-            int size = BFS.size();
-            
-            while (size--)
-            {
-                Node* node = BFS.front();
-                BFS.pop();
-                
-                if (node->left && vis.find(node->left) == vis.end())
-                {
-                    BFS.emplace(node->left);
-                    vis.emplace(node->left);
-                }
-                
-                if (node->right && vis.find(node->right) == vis.end())
-                {
-                    BFS.emplace(node->right);
-                    vis.emplace(node->right);
-                }
-                
-                if (parent.find(node) != parent.end() && vis.find(parent[node]) == vis.end())
-                {
-                    BFS.emplace(parent[node]);
-                    vis.emplace(parent[node]);
-                }
-            }
-            
-            k--;
-        }
-        
-        vector<int> nodes;
-        
-        while (!BFS.empty())
-        {
-            Node* node = BFS.front();
-            BFS.pop();
-            int data = node->data;
-            nodes.emplace_back(data);
-        }
-    
-        sort (nodes.begin(), nodes.end());
-        
-        return nodes;
+        sort(ans.begin(), ans.end());
+        return ans;
     }
 };
 
