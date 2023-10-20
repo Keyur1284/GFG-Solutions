@@ -10,21 +10,13 @@ using namespace std;
 class Solution {
   public:
     int isPossible(int N, int arr[]) {
-        
-        int sum = 0;
-
-        for (int i = 0; i < N; i++)
-        {
-            int num = arr[i];
-            
-            while (num > 0)
-            {
-                sum += num % 10;
-                num /= 10;
-            }
+        // code here
+        long sum = 0;
+        for(int i=0 ; i<N ; i++){
+            sum += arr[i];
         }
-        
-        return (sum % 3 == 0);
+        if(sum%3 == 0) return 1;
+        else return 0;
     }
 };
 
