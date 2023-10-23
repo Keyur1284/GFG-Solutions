@@ -9,23 +9,27 @@ public:
 	
 	int maxSumIS(int arr[], int n)  
 	{  
-	    vector<vector<int>> dp (n + 1, vector<int> (n + 1, 0));
+	    vector<int> dp (n + 1, 0);
 	    
 	    for (int index = n - 1; index >= 0; index--)
 	    {
+	        vector<int> temp (n + 1, 0);
+	        
 	        for (int prev = index - 1; prev >= -1; prev--)
 	        {
-	            int notTake = dp[index + 1][prev + 1];
+	            int notTake = dp[prev + 1];
 	            int take = 0;
 	            
 	            if (prev == -1 || arr[index] > arr[prev])
-	                take = arr[index] + dp[index + 1][index + 1];
+	                take = arr[index] + dp[index + 1];
 	                
-	            dp[index][prev + 1] = max(take, notTake);
+	            temp[prev + 1] = max(take, notTake);
 	        }
+	        
+	        dp = temp;
 	    }
 	    
-	    return dp[0][-1 + 1];
+	    return dp[0];
 	}  
 };
 	
