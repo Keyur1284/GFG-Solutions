@@ -3,36 +3,33 @@
 using namespace std;
 
 // } Driver Code Ends
-
 class Solution{
-public:
+	public:
 	
 	int maxSumIS(int arr[], int n)  
 	{  
-	    vector<int> dp (n + 1, 0);
+	    vector<int> dp(n);
 	    
-	    for (int index = n - 1; index >= 0; index--)
+	    for (int i = 0; i < n; i++)
+	        dp[i] = arr[i];
+	    
+	    int maxi = 0;
+	    
+	    for (int index = 0; index < n; index++)
 	    {
-	        vector<int> temp (n + 1, 0);
-	        
-	        for (int prev = index - 1; prev >= -1; prev--)
+	        for (int prev = 0; prev < index; prev++)
 	        {
-	            int notTake = dp[prev + 1];
-	            int take = 0;
-	            
-	            if (prev == -1 || arr[index] > arr[prev])
-	                take = arr[index] + dp[index + 1];
-	                
-	            temp[prev + 1] = max(take, notTake);
+	            if (arr[index] > arr[prev])
+	                dp[index] = max(dp[index], arr[index] + dp[prev]);
 	        }
 	        
-	        dp = temp;
+	        maxi = max(maxi, dp[index]);
 	    }
 	    
-	    return dp[0];
+	    return maxi;
 	}  
 };
-	
+
 
 
 //{ Driver Code Starts.
