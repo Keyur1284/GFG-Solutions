@@ -4,8 +4,9 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution{
+		
+
 	public:
-	
 	int maxSumIS(int arr[], int n)  
 	{  
 	    vector<int> dp(n);
@@ -29,8 +30,6 @@ class Solution{
 	    return maxi;
 	}  
 };
-
-
 
 //{ Driver Code Starts.
 int main() 
