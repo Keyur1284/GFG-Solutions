@@ -10,36 +10,45 @@ using namespace std;
 class Solution{
 public:
     
-    int solve (int start, int len, vector<vector<bool>> &dp, vector<int> &cost, string &s)
+    bool isPalindrome (string &s, int start, int end)
     {
-        if (start == len)
-            return 0;
-            
-        if (cost[start] != -1)
-            return cost[start];
-            
-        int minCost = INT_MAX;
-        
-        for (int end = start; end < len; end++)
+        while (start <= end)
         {
-            if (s[end] == s[start] && (end - start <= 2 || dp[start + 1][end - 1]))
+            if (s[start++] != s[end--])
+                return false;
+        }
+        
+        return true;
+    }
+    
+    int func (int i, int n, vector <int> &dp, string &s)
+    {
+        if (i == n)
+            return 0;
+        
+        if (dp[i] != -1)
+            return dp[i];
+        
+        int mini = INT_MAX;
+        
+        for (int j = i; j < n; j++)
+        {
+            if (isPalindrome(s, i, j))
             {
-                dp[start][end] = true;
-                int currcost = 1 + solve (end + 1, len, dp, cost, s);
-                minCost = min(currcost, minCost);
+                int cost = 1 + func (j + 1, n, dp, s);
+                mini = min (mini, cost);
             }
         }
         
-        return cost[start] = minCost;
+        return dp[i] = mini;
     }
 
-    int palindromicPartition(string &str)
+    int palindromicPartition(string s)
     {
-        int len = str.length();
-        vector<vector<bool>> dp(len, vector<bool> (len, false));
-        vector<int> cost(len, -1);
+        int n = s.size();
+        vector <int> dp (n, -1);
         
-        return solve (0, len, dp, cost, str) - 1;
+        return func (0, n, dp, s) - 1;
     }
 };
 
