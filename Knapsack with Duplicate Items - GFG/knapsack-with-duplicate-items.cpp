@@ -9,7 +9,7 @@ using namespace std;
 
 class Solution{
 public:
-
+    
     int solve (int index, int tar, int val[], int wt[], vector<vector<int>> &dp)
     {
         if (index == -1)
