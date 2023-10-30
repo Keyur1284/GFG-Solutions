@@ -14,7 +14,6 @@ class Solution{
     // of all pairs
     long long int sumXOR(int arr[], int n)
     {
-    	
     	long long sum = 0;
     	
     	for (int pos = 0; pos < 32;  pos++)
